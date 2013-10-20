@@ -1,4 +1,6 @@
-module Faxgeraet
+class Faxgeraet
+  def initialize(host, username, password)
+  end
   def fetch_folders
   end
   def show_folder_content(folder_name)
