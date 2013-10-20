@@ -11,7 +11,7 @@ module Fax
     end
     def fetch_folders
       result_set = @couch.query_view('folders', 'all', true)
-      result_set['rows'].map {|f| Fax::MailFolder.new(f)}
+      result_set['rows'].map {|f| Fax::MailFolder.new(f['doc'])}
     end
     def show_folder_content(folder_name)
     end
