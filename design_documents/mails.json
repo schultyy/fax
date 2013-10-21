@@ -1,0 +1,1 @@
+{"_id":"_design/mails","_rev":"1-c09a389a0ed4fc81f55c9c42322efeac","language":"javascript","views":{"by_folder_id":{"map":"function(doc) {\n  if(doc.type){\n    if(doc.type == 'mail'){\n      emit(doc.folder_id, null);\n    }\n  }\n}"}}}

@@ -1,0 +1,1 @@
+{"_id":"_design/folders","_rev":"2-fd5f095c2a930487b2042d0aea4793bd","language":"javascript","views":{"all":{"map":"function(doc) {\n  if(doc.type){\n    if(doc.type == 'folder'){\n      emit(doc._id, null);\n    }\n  }\n}"}}}
