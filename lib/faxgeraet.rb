@@ -1,5 +1,7 @@
-require './lib/couch_adapter'
+require 'net/imap'
 require 'virtus'
+require 'mail'
+require './lib/couch_adapter'
 require './lib/mail_folder'
 require './lib/email'
 
@@ -7,7 +9,8 @@ module Fax
   class Faxgeraet
     COUCH_DB = 'http://localhost:5984'
     DB = 'faxgeraet'
-    def initialize(host, username, password)
+    def initialize(options)
+      @options = options
       @couch = CouchAdapter.new(Faxgeraet::COUCH_DB, Faxgeraet::DB)
     end
     def fetch_folders
@@ -20,5 +23,16 @@ module Fax
     end
     def get_mail_by_id(folder_name, mail_id)
     end
+    def fetch_mails()
+      imap = Net::IMAP.new(@options[:mail_address], :port => 993, :ssl => true)
+      imap.login(@options[:username], @options[:password])
+      imap.examine('INBOX')
+      imap.search(['NOT', 'SEEN']).each do |message_id|
+        envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
+        raw_body_text = imap.fetch(message_id,'BODY[TEXT]')[0].attr['BODY[TEXT]']
+        body_text = Mail.new(raw_body_text).body
+      end
+    end
+    private
   end
 end
