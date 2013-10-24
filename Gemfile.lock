@@ -8,6 +8,7 @@ GEM
     coercible (0.2.0)
       backports (~> 3.0, >= 3.1.0)
       descendants_tracker (~> 0.0.1)
+    curb (0.8.5)
     descendants_tracker (0.0.3)
     equalizer (0.0.7)
     i18n (0.6.4)
@@ -50,6 +51,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  curb
   json
   mail
   sinatra
