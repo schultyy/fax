@@ -23,6 +23,10 @@ get '/:folder/mail/:id' do
   json @fax.get_mail_by_id(folder_name, mail_id)
 end
 
+post '/fetchmails' do
+  
+end
+
 post '/sendmail' do
     # not implemented. Who actually wants to write mails?
 end

@@ -17,8 +17,12 @@ module Fax
       result_set = @couch.query_view('folders', 'all', true)
       result_set['rows'].map {|f| Fax::MailFolder.new(f['doc']).to_hash}
     end
+    def get_folder_id_by_name(folder_name)
+      result_set = @couch.query_view_with_param('folders','by_name', {"Name" => folder_name})
+      result_set['rows'].map { |m| m['id'] }
+    end
     def show_folder_content(folder_id)
-      result_set = @couch.query_view_with_param('mails','by_folder_id', folder_id, true)
+      result_set = @couch.query_view_with_param('mails','by_folder_id', folder_id)
       result_set['rows'].map {|m| Fax::Email.new(m['doc']).to_hash}
     end
     def get_mail_by_id(folder_name, mail_id)
@@ -31,8 +35,22 @@ module Fax
         envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
         raw_body_text = imap.fetch(message_id,'BODY[TEXT]')[0].attr['BODY[TEXT]']
         body_text = Mail.new(raw_body_text).body
+        mail = email_from_raw_data(envelope, body_text, '')
+        @couch.save_mail(mail.to_hash(false))
       end
+      imap.close()
     end
     private
+    def email_from_raw_data(envelope, body_text, folder_id)
+      from_mailbox = envelope.from[0].mailbox
+      to_mailbox = envelope.to[0].mailbox
+
+      from_host = envelope.from[0].host
+      to_host = envelope.to[0].host
+      from = "#{from_mailbox}@#{from_host}"
+      to = "#{to_mailbox}@#{to_host}" 
+      Fax::Email.from_data(envelope.message_id, from, to, envelope.subject,
+                     body_text, folder_id)
+    end
   end
 end

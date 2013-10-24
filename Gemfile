@@ -6,3 +6,5 @@ gem 'sinatra-contrib'
 gem 'json'
 gem 'virtus'
 gem 'mail'
+gem 'curb'
+
