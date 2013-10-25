@@ -1,11 +1,13 @@
 require 'sinatra'
+require 'json'
 require 'sinatra/contrib'
 require './lib/faxgeraet'
 
 set :root, File.expand_path('../../', __FILE__)
 
 before do
-  @fax = Fax::Faxgeraet.new(nil, nil, nil)
+  credentials = JSON.parse(File.read('credentials.json'))
+  @fax = Fax::Faxgeraet.new(credentials)
 end
 
 get '/folders' do
@@ -24,7 +26,7 @@ get '/:folder/mail/:id' do
 end
 
 post '/fetchmails' do
-  
+
 end
 
 post '/sendmail' do

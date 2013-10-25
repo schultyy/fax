@@ -12,8 +12,8 @@ module Fax
       get(base_url, params_hash)
     end
     def query_view(design, view_name)
-      query = create_view_url(design, view_name, include_docs)
-      request('GET', query)
+      query = create_view_url(design, view_name)
+      get(query, {:include_docs => true}) 
     end
     def save_mail(doc)
       post(host_with_db, doc.to_json)
@@ -23,7 +23,7 @@ module Fax
       "#{@host}/#{@database}"
     end
     def create_view_url(design, view_name)
-      "#{@host}/_design/#{design}/_view/#{view_name}"
+      "#{@host}/#{@database}/_design/#{design}/_view/#{view_name}"
     end
     def post(actual_request, params)
       result = Curl.post(actual_request, params) do |curl|

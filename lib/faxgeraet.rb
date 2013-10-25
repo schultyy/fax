@@ -14,7 +14,7 @@ module Fax
       @couch = CouchAdapter.new(Faxgeraet::COUCH_DB, Faxgeraet::DB)
     end
     def fetch_folders
-      result_set = @couch.query_view('folders', 'all', true)
+      result_set = @couch.query_view('folders', 'all') 
       result_set['rows'].map {|f| Fax::MailFolder.new(f['doc']).to_hash}
     end
     def get_folder_id_by_name(folder_name)
@@ -28,7 +28,7 @@ module Fax
     def get_mail_by_id(folder_name, mail_id)
     end
     def fetch_mails()
-      imap = Net::IMAP.new(@options[:mail_address], :port => 993, :ssl => true)
+      imap = Net::IMAP.new(@options[:server], :port => 993, :ssl => true)
       imap.login(@options[:username], @options[:password])
       imap.examine('INBOX')
       imap.search(['NOT', 'SEEN']).each do |message_id|
