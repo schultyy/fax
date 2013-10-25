@@ -8,3 +8,6 @@ gem 'virtus'
 gem 'mail'
 gem 'curb'
 
+group :test do
+  gem 'rspec'
+end
