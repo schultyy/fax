@@ -17,14 +17,15 @@ describe 'The fax app' do
     expect(last_response).to be_ok
     expect(last_response.body).to eq('"hello"')
   end
-  context 'Folders' do
+  context 'GET /folders' do
     before do
       Fax::Faxgeraet.stub(:new).with(any_args).and_return(@fax)
       @fax.stub(:fetch_folders).with(any_args).and_return([])
-    end
-    it '/folders should return all folders' do
       get '/folders'
-      expect(last_response).to be_ok
+    end
+    it 'responds with 200' do
+      last_response.status.should eq(200)
+      #expect(last_response).to be_ok
     end
   end
 end
