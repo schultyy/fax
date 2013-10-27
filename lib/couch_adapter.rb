@@ -9,10 +9,22 @@ module Fax
       @host = host
       @database = database
     end
-    def query_view_with_param(design, view_name, param)
+    def query_view_with_params(design, view_name, params)
+      raise Error('design must be set') unless design
+      raise Error('view_name must be set') unless view_name
+      raise Error('params must be set') unless params
+
       base_url = create_view_url(design, view_name)
-      base_url << '?' << "key=\"#{param}\""
-      get(base_url)
+      return get(base_url) if params.empty?
+
+      url_with_params = base_url + '?' + params.map do |k,v| 
+        if v.class == String
+          "#{k}=\"#{v}\"" 
+        else
+          "#{k}=#{v}"
+        end
+      end.join('&')
+      get(url_with_params)
     end
     def query_view(design, view_name)
       raise Error('design must be set') unless design 
