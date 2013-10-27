@@ -53,5 +53,30 @@ describe 'The fax app' do
     it 'is an array' do
       json_response.class.should eq(Array)
     end
+    context 'A single folder' do
+      subject { json_response.first } 
+
+      it 'has id attribute' do
+        subject.has_key?(:_id)
+      end
+      it 'has from attribute' do
+        subject.has_key?(:from)
+      end
+      it 'has to attribute' do
+        subject.has_key?(:to)
+      end
+      it 'has subject attribute' do
+        subject.has_key?(:subject)
+      end
+      it 'has body attribute' do
+        subject.has_key?(:body)
+      end
+      it 'has folder_id attribute' do
+        subject.has_key?(:folder_id)
+      end
+      it 'has message_id attribute' do
+        subject.has_key?(:message_id)
+      end
+    end
   end
 end

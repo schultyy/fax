@@ -23,7 +23,7 @@ module Fax
     end
     def show_folder_content(folder_id)
       result_set = @couch.query_view_with_param('mails','by_folder_id', folder_id)
-      result_set['rows'].map {|m| Fax::Email.new(m['doc']).to_hash}
+      result_set['rows'].map {|m| Fax::Email.new(m['doc'])}
     end
     def get_mail_by_id(folder_name, mail_id)
     end
