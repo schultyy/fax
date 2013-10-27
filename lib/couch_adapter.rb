@@ -4,6 +4,7 @@ require 'addressable/uri'
 
 module Fax
   class CouchAdapter
+    attr_accessor :host, :database
     def initialize(host, database)
       @host = host
       @database = database
@@ -39,7 +40,6 @@ module Fax
     end
     def get(actual_request)
       parsed_uri = Addressable::URI.parse(actual_request).to_s
-      puts parsed_uri
       result_set = Curl.get(parsed_uri)
       JSON.parse(result_set.body_str)
     end
