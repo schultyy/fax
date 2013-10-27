@@ -10,6 +10,7 @@ describe 'The fax app' do
 
   before :each do
     @fax = double("Fax::Faxgeraet")
+    Fax::Faxgeraet.stub(:new).with(any_args).and_return(@fax)
   end
 
   it "says hello" do
@@ -19,7 +20,6 @@ describe 'The fax app' do
   end
   context 'GET /folders' do
     before do
-      Fax::Faxgeraet.stub(:new).with(any_args).and_return(@fax)
       folder = FactoryGirl.build :folder
       allow(@fax).to receive(:fetch_folders).and_return([folder])
       get '/folders'
@@ -39,6 +39,19 @@ describe 'The fax app' do
       it 'has name attribute' do
         subject.has_key?(:name)
       end
+    end
+  end
+  context 'GET /Inbox' do
+    before do
+      mail = FactoryGirl.build :mail
+      allow(@fax).to receive(:show_folder_content).and_return([mail])
+      get '/Inbox'
+    end
+    it 'responds with 200' do
+      last_response.status.should eq(200)
+    end
+    it 'is an array' do
+      json_response.class.should eq(Array)
     end
   end
 end
