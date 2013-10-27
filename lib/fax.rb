@@ -6,17 +6,19 @@ require './lib/faxgeraet'
 set :root, File.expand_path('../../', __FILE__)
 
 before do
-  credentials = JSON.parse(File.read('credentials.json'))
-  @fax = Fax::Faxgeraet.new(credentials)
+  @fax = Fax::Faxgeraet.new(nil)
 end
 
 get '/folders' do
-  json @fax.fetch_folders
+   folders = @fax.fetch_folders
+   json folders.map{|f| f.to_hash }
 end
 
 get '/:folder' do
   folder_name = params[:folder]
-  json @fax.show_folder_content(folder_name)
+  folder_id = @fax.get_folder_id_by_name(folder_name)
+  mails = @fax.show_folder_content(folder_id)
+  json mails.map{ |m| m.to_hash }
 end
 
 get '/:folder/mail/:id' do

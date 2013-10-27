@@ -18,7 +18,7 @@ module Fax
       mail.folder_id = folder_id
       mail
     end 
-    def to_hash(with_id)
+    def to_hash(with_id = nil)
       hash = {
         :from => @from,
         :to => @to,
