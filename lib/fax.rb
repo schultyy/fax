@@ -6,12 +6,7 @@ require './lib/faxgeraet'
 set :root, File.expand_path('../../', __FILE__)
 
 before do
-  credentials = JSON.parse(File.read('credentials.json'))
-  @fax = Fax::Faxgeraet.new(credentials)
-end
-
-get '/' do
-  json "hello"
+  @fax = Fax::Faxgeraet.new(nil)
 end
 
 get '/folders' do

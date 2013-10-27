@@ -12,12 +12,6 @@ describe 'The fax app' do
     @fax = double("Fax::Faxgeraet")
     Fax::Faxgeraet.stub(:new).with(any_args).and_return(@fax)
   end
-
-  it "says hello" do
-    get '/'
-    expect(last_response).to be_ok
-    expect(last_response.body).to eq('"hello"')
-  end
   context 'GET /folders' do
     before do
       folder = FactoryGirl.build :folder
