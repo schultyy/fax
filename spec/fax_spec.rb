@@ -20,15 +20,25 @@ describe 'The fax app' do
   context 'GET /folders' do
     before do
       Fax::Faxgeraet.stub(:new).with(any_args).and_return(@fax)
-      @folder = FactoryGirl.build :folder
-      @fax.stub(:fetch_folders).with(any_args).and_return([@folder])
+      folder = FactoryGirl.build :folder
+      allow(@fax).to receive(:fetch_folders).and_return([folder])
       get '/folders'
     end
     it 'responds with 200' do
       last_response.status.should eq(200)
     end
-    it 'returns a list of folders' do
-      puts json_response
+    it 'is an array' do
+      json_response.class.should eq(Array)
+    end
+    context 'A single folder' do
+      subject{ json_response.first }
+
+      it 'has id attribute' do
+        subject.has_key?(:_id)
+      end
+      it 'has name attribute' do
+        subject.has_key?(:name)
+      end
     end
   end
 end

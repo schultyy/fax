@@ -9,7 +9,7 @@ module Fax
     end
     def query_view_with_param(design, view_name, params_hash = {})
       base_url = create_view_url(design, view_name)
-      get(base_url, params_hash)
+      get(base_url, params_hash.to_json)
     end
     def query_view(design, view_name)
       query = create_view_url(design, view_name)

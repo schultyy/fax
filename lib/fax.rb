@@ -10,8 +10,13 @@ before do
   @fax = Fax::Faxgeraet.new(credentials)
 end
 
+get '/' do
+  json "hello"
+end
+
 get '/folders' do
-  json @fax.fetch_folders
+   folders = @fax.fetch_folders
+   json folders.map{|f| f.to_hash }
 end
 
 get '/:folder' do
