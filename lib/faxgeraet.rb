@@ -18,11 +18,12 @@ module Fax
       result_set['rows'].map {|f| Fax::MailFolder.new(f['doc'])}
     end
     def get_folder_id_by_name(folder_name)
-      result_set = @couch.query_view_with_param('folders','by_name', folder_name)
-      result_set['rows'].map { |m| m['id'] }
+      params = { 'name' => folder_name, 'limit' => 1 }
+      result_set = @couch.query_view_with_params('folders','by_name', params)
+      result_set['rows'].map { |m| m['id'] }[0]
     end
     def show_folder_content(folder_id)
-      result_set = @couch.query_view_with_param('mails','by_folder_name', folder_name)
+      result_set = @couch.query_view_with_param('mails','by_folder_id', folder_id)
       result_set['rows'].map {|m| Fax::Email.new(m['doc'])}
     end
     def get_mail_by_id(folder_name, mail_id)

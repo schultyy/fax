@@ -16,6 +16,7 @@ end
 
 get '/:folder' do
   folder_name = params[:folder]
+  folder_id = @fax.get_folder_id_by_name(folder_name)
   mails = @fax.show_folder_content(folder_name)
   json mails.map{ |m| m.to_hash }
 end
