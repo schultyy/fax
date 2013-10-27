@@ -39,7 +39,7 @@ describe 'The fax app' do
     before do
       mail = FactoryGirl.build :mail
       allow(@fax).to receive(:show_folder_content).and_return([mail])
-      
+      allow(@fax).to receive(:get_folder_id_by_name).and_return(1)
       get '/Inbox'
     end
     it 'responds with 200' do
