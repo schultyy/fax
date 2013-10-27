@@ -15,6 +15,8 @@ module Fax
       get(base_url)
     end
     def query_view(design, view_name)
+      raise Error('design must be set') unless design 
+      raise Error('view_name must be set') unless view_name
       query = create_view_url(design, view_name)
       get(include_docs(query))
     end
