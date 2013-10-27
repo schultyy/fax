@@ -65,6 +65,11 @@ describe 'CouchAdapter' do
         expected = @base_query + '?key="abc"'
         result.should eq(expected)
       end
+      it 'should include key, limit and docs' do
+        params = { 'key' => 'abc', 'include_docs' => true, 'limit' => 1 }
+        result = @couch.query_view_with_params(@design, @view, params)
+        expected = @base_query + '?key="abc"&include_docs=true&limit=>1'
+      end
     end
   end
 end
