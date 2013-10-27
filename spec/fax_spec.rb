@@ -39,15 +39,16 @@ describe 'The fax app' do
     before do
       mail = FactoryGirl.build :mail
       allow(@fax).to receive(:show_folder_content).and_return([mail])
+      
       get '/Inbox'
     end
     it 'responds with 200' do
       last_response.status.should eq(200)
     end
-    it 'is an array' do
+    it 'returns an array' do
       json_response.class.should eq(Array)
     end
-    context 'A single folder' do
+    context 'A single mail' do
       subject { json_response.first } 
 
       it 'has id attribute' do
